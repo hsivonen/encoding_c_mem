@@ -20,6 +20,12 @@ use encoding_rs::mem::Latin1Bidi;
 ///
 /// May read the entire buffer even if it isn't all-ASCII. (I.e. the function
 /// is not guaranteed to fail fast.)
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_is_ascii(buffer: *const u8, len: usize) -> bool {
     encoding_rs::mem::is_ascii(::std::slice::from_raw_parts(buffer, len))
@@ -30,6 +36,12 @@ pub unsafe extern "C" fn encoding_mem_is_ascii(buffer: *const u8, len: usize) ->
 ///
 /// May read the entire buffer even if it isn't all-ASCII. (I.e. the function
 /// is not guaranteed to fail fast.)
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL` and aligned.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_is_basic_latin(buffer: *const u16, len: usize) -> bool {
     encoding_rs::mem::is_basic_latin(::std::slice::from_raw_parts(buffer, len))
@@ -40,6 +52,12 @@ pub unsafe extern "C" fn encoding_mem_is_basic_latin(buffer: *const u16, len: us
 ///
 /// Fails fast. (I.e. returns before having read the whole buffer if UTF-8
 /// invalidity or code points above U+00FF are discovered.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_is_utf8_latin1(buffer: *const u8, len: usize) -> bool {
     encoding_rs::mem::is_utf8_latin1(::std::slice::from_raw_parts(buffer, len))
@@ -50,6 +68,13 @@ pub unsafe extern "C" fn encoding_mem_is_utf8_latin1(buffer: *const u8, len: usi
 ///
 /// Fails fast. (I.e. returns before having read the whole buffer if code
 /// points above U+00FF are discovered.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block,
+/// if `buffer` is `NULL`, or if the memory designated by `buffer` and `buffer_len`
+/// does not contain valid UTF-8. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_is_str_latin1(buffer: *const u8, len: usize) -> bool {
     encoding_rs::mem::is_str_latin1(::std::str::from_utf8_unchecked(
@@ -62,6 +87,12 @@ pub unsafe extern "C" fn encoding_mem_is_str_latin1(buffer: *const u8, len: usiz
 ///
 /// May read the entire buffer even if it isn't all-Latin1. (I.e. the function
 /// is not guaranteed to fail fast.)
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL` and aligned.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_is_utf16_latin1(buffer: *const u16, len: usize) -> bool {
     encoding_rs::mem::is_utf16_latin1(::std::slice::from_raw_parts(buffer, len))
@@ -83,6 +114,12 @@ pub unsafe extern "C" fn encoding_mem_is_utf16_latin1(buffer: *const u16, len: u
 /// Returns `true` if the input is invalid UTF-8 or the input contains an
 /// RTL character. Returns `false` if the input is valid UTF-8 and contains
 /// no RTL characters.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_is_utf8_bidi(buffer: *const u8, len: usize) -> bool {
     encoding_rs::mem::is_utf8_bidi(::std::slice::from_raw_parts(buffer, len))
@@ -100,6 +137,13 @@ pub unsafe extern "C" fn encoding_mem_is_utf8_bidi(buffer: *const u8, len: usize
 /// cause right-to-left behavior without the presence of right-to-left
 /// characters or right-to-left controls are not checked for. As a special
 /// case, U+FEFF is excluded from Arabic Presentation Forms-B.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block,
+/// if `buffer` is `NULL`, or if the memory designated by `buffer` and `buffer_len`
+/// does not contain valid UTF-8. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_is_str_bidi(buffer: *const u8, len: usize) -> bool {
     encoding_rs::mem::is_str_bidi(::std::str::from_utf8_unchecked(
@@ -124,6 +168,12 @@ pub unsafe extern "C" fn encoding_mem_is_str_bidi(buffer: *const u8, len: usize)
 /// high surrogate that could be the high half of an RTL character.
 /// Returns `false` if the input contains neither RTL characters nor
 /// unpaired high surrogates that could be higher halves of RTL characters.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL` and aligned.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_is_utf16_bidi(buffer: *const u16, len: usize) -> bool {
     encoding_rs::mem::is_utf16_bidi(::std::slice::from_raw_parts(buffer, len))
@@ -140,6 +190,10 @@ pub unsafe extern "C" fn encoding_mem_is_utf16_bidi(buffer: *const u16, len: usi
 /// cause right-to-left behavior without the presence of right-to-left
 /// characters or right-to-left controls are not checked for. As a special
 /// case, U+FEFF is excluded from Arabic Presentation Forms-B.
+///
+/// # Undefined behavior
+///
+/// Undefined behavior ensues if `c` is not a valid Unicode Scalar Value.
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_is_char_bidi(c: char) -> bool {
     encoding_rs::mem::is_char_bidi(c)
@@ -176,6 +230,12 @@ pub unsafe extern "C" fn encoding_mem_is_utf16_code_unit_bidi(u: u16) -> bool {
 /// Returns `Latin1Bidi::Latin1` if `is_utf8_latin1()` would return `true`.
 /// Otherwise, returns `Latin1Bidi::Bidi` if `is_utf8_bidi()` would return
 /// `true`. Otherwise, returns `Latin1Bidi::LeftToRight`.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_check_utf8_for_latin1_and_bidi(
     buffer: *const u8,
@@ -192,6 +252,13 @@ pub unsafe extern "C" fn encoding_mem_check_utf8_for_latin1_and_bidi(
 /// Returns `Latin1Bidi::Latin1` if `is_str_latin1()` would return `true`.
 /// Otherwise, returns `Latin1Bidi::Bidi` if `is_str_bidi()` would return
 /// `true`. Otherwise, returns `Latin1Bidi::LeftToRight`.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block,
+/// if `buffer` is `NULL`, or if the memory designated by `buffer` and `buffer_len`
+/// does not contain valid UTF-8. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_check_str_for_latin1_and_bidi(
     buffer: *const u8,
@@ -210,6 +277,12 @@ pub unsafe extern "C" fn encoding_mem_check_str_for_latin1_and_bidi(
 /// Returns `Latin1Bidi::Latin1` if `is_utf16_latin1()` would return `true`.
 /// Otherwise, returns `Latin1Bidi::Bidi` if `is_utf16_bidi()` would return
 /// `true`. Otherwise, returns `Latin1Bidi::LeftToRight`.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL` and aligned.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_check_utf16_for_latin1_and_bidi(
     buffer: *const u16,
@@ -229,6 +302,14 @@ pub unsafe extern "C" fn encoding_mem_check_utf16_for_latin1_and_bidi(
 /// # Panics
 ///
 /// Panics if the destination buffer is shorter than stated above.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_convert_utf8_to_utf16(
     src: *const u8,
@@ -252,6 +333,15 @@ pub unsafe extern "C" fn encoding_mem_convert_utf8_to_utf16(
 /// # Panics
 ///
 /// Panics if the destination buffer is shorter than stated above.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL`, if the two memory blocks overlap, of if the
+/// buffer designated by `src` and `src_len` does not contain valid UTF-8. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_convert_str_to_utf16(
     src: *const u8,
@@ -290,6 +380,14 @@ pub unsafe extern "C" fn encoding_mem_convert_str_to_utf16(
 /// If you want to convert into a `&mut str`, use
 /// `convert_utf16_to_str_partial()` instead of using this function
 /// together with the `unsafe` method `as_bytes_mut()` on `&mut str`.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_convert_utf16_to_utf8_partial(
     src: *const u16,
@@ -322,6 +420,14 @@ pub unsafe extern "C" fn encoding_mem_convert_utf16_to_utf8_partial(
 /// If you want to convert into a `&mut str`, use `convert_utf16_to_str()`
 /// instead of using this function together with the `unsafe` method
 /// `as_bytes_mut()` on `&mut str`.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_convert_utf16_to_utf8(
     src: *const u16,
@@ -346,6 +452,14 @@ pub unsafe extern "C" fn encoding_mem_convert_utf16_to_utf8(
 /// # Panics
 ///
 /// Panics if the destination buffer is shorter than stated above.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_convert_latin1_to_utf16(
     src: *const u8,
@@ -373,6 +487,14 @@ pub unsafe extern "C" fn encoding_mem_convert_latin1_to_utf16(
 /// indicated by the return value, so using a `&mut str` interpreted as
 /// `&mut [u8]` as the destination is not safe. If you want to convert into
 /// a `&mut str`, use `convert_utf16_to_str()` instead of this function.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_convert_latin1_to_utf8_partial(
     src: *const u8,
@@ -406,6 +528,14 @@ pub unsafe extern "C" fn encoding_mem_convert_latin1_to_utf8_partial(
 /// indicated by the return value, so using a `&mut str` interpreted as
 /// `&mut [u8]` as the destination is not safe. If you want to convert into
 /// a `&mut str`, use `convert_utf16_to_str()` instead of this function.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_convert_latin1_to_utf8(
     src: *const u8,
@@ -442,6 +572,14 @@ pub unsafe extern "C" fn encoding_mem_convert_latin1_to_utf8(
 ///
 /// If debug assertions are enabled (and not fuzzing) and the input is
 /// not in the range U+0000 to U+00FF, inclusive.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_convert_utf8_to_latin1_lossy(
     src: *const u8,
@@ -478,6 +616,14 @@ pub unsafe extern "C" fn encoding_mem_convert_utf8_to_latin1_lossy(
 ///
 /// (Probably in future versions if debug assertions are enabled (and not
 /// fuzzing) and the input is not in the range U+0000 to U+00FF, inclusive.)
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_convert_utf16_to_latin1_lossy(
     src: *const u16,
@@ -493,12 +639,24 @@ pub unsafe extern "C" fn encoding_mem_convert_utf16_to_latin1_lossy(
 
 /// Returns the index of the first unpaired surrogate or, if the input is
 /// valid UTF-16 in its entirety, the length of the input.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL` and aligned.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_utf16_valid_up_to(buffer: *const u16, len: usize) -> usize {
     encoding_rs::mem::utf16_valid_up_to(::std::slice::from_raw_parts(buffer, len))
 }
 
 /// Replaces unpaired surrogates in the input with the REPLACEMENT CHARACTER.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL` and aligned.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_ensure_utf16_validity(buffer: *mut u16, len: usize) {
     encoding_rs::mem::ensure_utf16_validity(::std::slice::from_raw_parts_mut(buffer, len));
@@ -515,6 +673,14 @@ pub unsafe extern "C" fn encoding_mem_ensure_utf16_validity(buffer: *mut u16, le
 /// # Panics
 ///
 /// Panics if the destination buffer is shorter than stated above.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_copy_ascii_to_ascii(
     src: *const u8,
@@ -540,6 +706,14 @@ pub unsafe extern "C" fn encoding_mem_copy_ascii_to_ascii(
 /// # Panics
 ///
 /// Panics if the destination buffer is shorter than stated above.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_copy_ascii_to_basic_latin(
     src: *const u8,
@@ -565,6 +739,14 @@ pub unsafe extern "C" fn encoding_mem_copy_ascii_to_basic_latin(
 /// # Panics
 ///
 /// Panics if the destination buffer is shorter than stated above.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_copy_basic_latin_to_ascii(
     src: *const u16,
