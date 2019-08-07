@@ -20,6 +20,10 @@ compliled with unwinding enabled.
 
 ## Release Notes
 
+### 0.1.1
+
+* Add include guard to the C header.
+
 ### 0.1.0
 
 * Initial release of encoding_c_mem.

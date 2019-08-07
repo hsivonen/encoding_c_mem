@@ -7,6 +7,9 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+#ifndef encoding_rs_mem_h_
+#define encoding_rs_mem_h_
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -649,3 +652,5 @@ size_t encoding_mem_utf16_valid_up_to(const char16_t* buffer, size_t len);
 #ifdef __cplusplus
 }  // extern "C"
 #endif  // __cplusplus
+
+#endif  // encoding_rs_mem_h_
