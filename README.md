@@ -20,6 +20,10 @@ compliled with unwinding enabled.
 
 ## Release Notes
 
+### 0.2.0
+
+* Use `char` instead of `uint8_t` for 8-bit-unit text in C and C++.
+
 ### 0.1.1
 
 * Add include guard to the C header.

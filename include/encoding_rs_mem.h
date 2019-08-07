@@ -63,7 +63,7 @@ extern "C" {
  * `buffer_len` does not contain valid UTF-8. (If `buffer_len` is `0`, `buffer`
  * may be bogus but still has to be non-`NULL`.)
  */
-Latin1Bidi encoding_mem_check_str_for_latin1_and_bidi(const uint8_t* buffer,
+Latin1Bidi encoding_mem_check_str_for_latin1_and_bidi(const char* buffer,
                                                       size_t len);
 
 /**
@@ -102,7 +102,7 @@ Latin1Bidi encoding_mem_check_utf16_for_latin1_and_bidi(const char16_t* buffer,
  * or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
  * still has to be non-`NULL`.)
  */
-Latin1Bidi encoding_mem_check_utf8_for_latin1_and_bidi(const uint8_t* buffer,
+Latin1Bidi encoding_mem_check_utf8_for_latin1_and_bidi(const char* buffer,
                                                        size_t len);
 
 /**
@@ -126,7 +126,7 @@ Latin1Bidi encoding_mem_check_utf8_for_latin1_and_bidi(const uint8_t* buffer,
  * `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
  * aligned. Likewise for `dst` and `dst_len`.)
  */
-void encoding_mem_convert_latin1_to_utf16(const uint8_t* src, size_t src_len,
+void encoding_mem_convert_latin1_to_utf16(const char* src, size_t src_len,
                                           char16_t* dst, size_t dst_len);
 
 /**
@@ -155,8 +155,8 @@ void encoding_mem_convert_latin1_to_utf16(const uint8_t* src, size_t src_len,
  * `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
  * aligned. Likewise for `dst` and `dst_len`.)
  */
-size_t encoding_mem_convert_latin1_to_utf8(const uint8_t* src, size_t src_len,
-                                           uint8_t* dst, size_t dst_len);
+size_t encoding_mem_convert_latin1_to_utf8(const char* src, size_t src_len,
+                                           char* dst, size_t dst_len);
 
 /**
  * Converts bytes whose unsigned value is interpreted as Unicode code point
@@ -182,8 +182,8 @@ size_t encoding_mem_convert_latin1_to_utf8(const uint8_t* src, size_t src_len,
  * `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
  * aligned. Likewise for `dst` and `dst_len`.)
  */
-void encoding_mem_convert_latin1_to_utf8_partial(const uint8_t* src,
-                                                 size_t* src_len, uint8_t* dst,
+void encoding_mem_convert_latin1_to_utf8_partial(const char* src,
+                                                 size_t* src_len, char* dst,
                                                  size_t* dst_len);
 
 /**
@@ -207,7 +207,7 @@ void encoding_mem_convert_latin1_to_utf8_partial(const uint8_t* src,
  * `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
  * aligned. Likewise for `dst` and `dst_len`.)
  */
-size_t encoding_mem_convert_str_to_utf16(const uint8_t* src, size_t src_len,
+size_t encoding_mem_convert_str_to_utf16(const char* src, size_t src_len,
                                          char16_t* dst, size_t dst_len);
 
 /**
@@ -243,7 +243,7 @@ size_t encoding_mem_convert_str_to_utf16(const uint8_t* src, size_t src_len,
  * aligned. Likewise for `dst` and `dst_len`.)
  */
 void encoding_mem_convert_utf16_to_latin1_lossy(const char16_t* src,
-                                                size_t src_len, uint8_t* dst,
+                                                size_t src_len, char* dst,
                                                 size_t dst_len);
 
 /**
@@ -268,7 +268,7 @@ void encoding_mem_convert_utf16_to_latin1_lossy(const char16_t* src,
  * aligned. Likewise for `dst` and `dst_len`.)
  */
 size_t encoding_mem_convert_utf16_to_utf8(const char16_t* src, size_t src_len,
-                                          uint8_t* dst, size_t dst_len);
+                                          char* dst, size_t dst_len);
 
 /**
  * Converts potentially-invalid UTF-16 to valid UTF-8 with errors replaced
@@ -299,7 +299,7 @@ size_t encoding_mem_convert_utf16_to_utf8(const char16_t* src, size_t src_len,
  * aligned. Likewise for `dst` and `dst_len`.)
  */
 void encoding_mem_convert_utf16_to_utf8_partial(const char16_t* src,
-                                                size_t* src_len, uint8_t* dst,
+                                                size_t* src_len, char* dst,
                                                 size_t* dst_len);
 
 /**
@@ -333,8 +333,8 @@ void encoding_mem_convert_utf16_to_utf8_partial(const char16_t* src,
  * `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
  * aligned. Likewise for `dst` and `dst_len`.)
  */
-size_t encoding_mem_convert_utf8_to_latin1_lossy(const uint8_t* src,
-                                                 size_t src_len, uint8_t* dst,
+size_t encoding_mem_convert_utf8_to_latin1_lossy(const char* src,
+                                                 size_t src_len, char* dst,
                                                  size_t dst_len);
 
 /**
@@ -358,7 +358,7 @@ size_t encoding_mem_convert_utf8_to_latin1_lossy(const uint8_t* src,
  * `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
  * aligned. Likewise for `dst` and `dst_len`.)
  */
-size_t encoding_mem_convert_utf8_to_utf16(const uint8_t* src, size_t src_len,
+size_t encoding_mem_convert_utf8_to_utf16(const char* src, size_t src_len,
                                           char16_t* dst, size_t dst_len);
 
 /**
@@ -382,8 +382,8 @@ size_t encoding_mem_convert_utf8_to_utf16(const uint8_t* src, size_t src_len,
  * `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
  * aligned. Likewise for `dst` and `dst_len`.)
  */
-size_t encoding_mem_copy_ascii_to_ascii(const uint8_t* src, size_t src_len,
-                                        uint8_t* dst, size_t dst_len);
+size_t encoding_mem_copy_ascii_to_ascii(const char* src, size_t src_len,
+                                        char* dst, size_t dst_len);
 
 /**
  * Copies ASCII from source to destination zero-extending it to UTF-16 up to
@@ -407,9 +407,8 @@ size_t encoding_mem_copy_ascii_to_ascii(const uint8_t* src, size_t src_len,
  * `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
  * aligned. Likewise for `dst` and `dst_len`.)
  */
-size_t encoding_mem_copy_ascii_to_basic_latin(const uint8_t* src,
-                                              size_t src_len, char16_t* dst,
-                                              size_t dst_len);
+size_t encoding_mem_copy_ascii_to_basic_latin(const char* src, size_t src_len,
+                                              char16_t* dst, size_t dst_len);
 
 /**
  * Copies Basic Latin from source to destination narrowing it to ASCII up to
@@ -434,7 +433,7 @@ size_t encoding_mem_copy_ascii_to_basic_latin(const uint8_t* src,
  * aligned. Likewise for `dst` and `dst_len`.)
  */
 size_t encoding_mem_copy_basic_latin_to_ascii(const char16_t* src,
-                                              size_t src_len, uint8_t* dst,
+                                              size_t src_len, char* dst,
                                               size_t dst_len);
 
 /**
@@ -460,7 +459,7 @@ void encoding_mem_ensure_utf16_validity(char16_t* buffer, size_t len);
  * or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
  * still has to be non-`NULL`.)
  */
-bool encoding_mem_is_ascii(const uint8_t* buffer, size_t len);
+bool encoding_mem_is_ascii(const char* buffer, size_t len);
 
 /**
  * Checks whether the buffer is all-Basic Latin (i.e. UTF-16 representing
@@ -517,7 +516,7 @@ bool encoding_mem_is_char_bidi(char32_t c);
  * `buffer_len` does not contain valid UTF-8. (If `buffer_len` is `0`, `buffer`
  * may be bogus but still has to be non-`NULL`.)
  */
-bool encoding_mem_is_str_bidi(const uint8_t* buffer, size_t len);
+bool encoding_mem_is_str_bidi(const char* buffer, size_t len);
 
 /**
  * Checks whether the buffer represents only code point less than or equal
@@ -533,7 +532,7 @@ bool encoding_mem_is_str_bidi(const uint8_t* buffer, size_t len);
  * `buffer_len` does not contain valid UTF-8. (If `buffer_len` is `0`, `buffer`
  * may be bogus but still has to be non-`NULL`.)
  */
-bool encoding_mem_is_str_latin1(const uint8_t* buffer, size_t len);
+bool encoding_mem_is_str_latin1(const char* buffer, size_t len);
 
 /**
  * Checks whether a UTF-16 buffer contains code points that trigger
@@ -620,7 +619,7 @@ bool encoding_mem_is_utf16_latin1(const char16_t* buffer, size_t len);
  * or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
  * still has to be non-`NULL`.)
  */
-bool encoding_mem_is_utf8_bidi(const uint8_t* buffer, size_t len);
+bool encoding_mem_is_utf8_bidi(const char* buffer, size_t len);
 
 /**
  * Checks whether the buffer is valid UTF-8 representing only code points
@@ -635,7 +634,7 @@ bool encoding_mem_is_utf8_bidi(const uint8_t* buffer, size_t len);
  * or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
  * still has to be non-`NULL`.)
  */
-bool encoding_mem_is_utf8_latin1(const uint8_t* buffer, size_t len);
+bool encoding_mem_is_utf8_latin1(const char* buffer, size_t len);
 
 /**
  * Returns the index of the first unpaired surrogate or, if the input is

@@ -61,8 +61,7 @@ inline Latin1Bidi check_for_latin1_and_bidi(std::u16string_view buffer) {
  */
 inline Latin1Bidi check_for_latin1_and_bidi(std::string_view buffer) {
   return encoding_mem_check_utf8_for_latin1_and_bidi(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(
-          reinterpret_cast<const uint8_t*>(buffer.data())),
+      encoding_rs::mem::detail::null_to_bogus<const char>(buffer.data()),
       buffer.size());
 }
 
@@ -79,10 +78,10 @@ inline Latin1Bidi check_for_latin1_and_bidi(std::string_view buffer) {
  *
  * Panics if the destination buffer is shorter than stated above.
  */
-inline void convert_latin1_to_utf16(gsl::span<const uint8_t> src,
+inline void convert_latin1_to_utf16(gsl::span<const char> src,
                                     gsl::span<char16_t> dst) {
   encoding_mem_convert_latin1_to_utf16(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(src.data()),
+      encoding_rs::mem::detail::null_to_bogus<const char>(src.data()),
       src.size(), encoding_rs::mem::detail::null_to_bogus<char16_t>(dst.data()),
       dst.size());
 }
@@ -109,11 +108,11 @@ inline void convert_latin1_to_utf16(gsl::span<const uint8_t> src,
  *
  * UB ensues if `src` and `dst` overlap.
  */
-inline size_t convert_latin1_to_utf8(gsl::span<const uint8_t> src,
-                                     gsl::span<uint8_t> dst) {
+inline size_t convert_latin1_to_utf8(gsl::span<const char> src,
+                                     gsl::span<char> dst) {
   return encoding_mem_convert_latin1_to_utf8(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(src.data()),
-      src.size(), encoding_rs::mem::detail::null_to_bogus<uint8_t>(dst.data()),
+      encoding_rs::mem::detail::null_to_bogus<const char>(src.data()),
+      src.size(), encoding_rs::mem::detail::null_to_bogus<char>(dst.data()),
       dst.size());
 }
 
@@ -138,12 +137,12 @@ inline size_t convert_latin1_to_utf8(gsl::span<const uint8_t> src,
  * UB ensues if `src` and `dst` overlap.
  */
 inline std::tuple<size_t, size_t> convert_latin1_to_utf8_partial(
-    gsl::span<const uint8_t> src, gsl::span<uint8_t> dst) {
+    gsl::span<const char> src, gsl::span<char> dst) {
   size_t src_read = src.size();
   size_t dst_written = dst.size();
   encoding_mem_convert_latin1_to_utf8_partial(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(src.data()),
-      &src_read, encoding_rs::mem::detail::null_to_bogus<uint8_t>(dst.data()),
+      encoding_rs::mem::detail::null_to_bogus<const char>(src.data()),
+      &src_read, encoding_rs::mem::detail::null_to_bogus<char>(dst.data()),
       &dst_written);
   return {src_read, dst_written};
 }
@@ -163,8 +162,8 @@ inline std::tuple<size_t, size_t> convert_latin1_to_utf8_partial(
 inline size_t convert_str_to_utf16(std::string_view src,
                                    gsl::span<char16_t> dst) {
   return encoding_mem_convert_str_to_utf16(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(
-          reinterpret_cast<const uint8_t*>(src.data())),
+      encoding_rs::mem::detail::null_to_bogus<const char>(
+          reinterpret_cast<const char*>(src.data())),
       src.size(), encoding_rs::mem::detail::null_to_bogus<char16_t>(dst.data()),
       dst.size());
 }
@@ -194,10 +193,10 @@ inline size_t convert_str_to_utf16(std::string_view src,
  * fuzzing) and the input is not in the range U+0000 to U+00FF, inclusive.)
  */
 inline void convert_utf16_to_latin1_lossy(std::u16string_view src,
-                                          gsl::span<uint8_t> dst) {
+                                          gsl::span<char> dst) {
   encoding_mem_convert_utf16_to_latin1_lossy(
       encoding_rs::mem::detail::null_to_bogus<const char16_t>(src.data()),
-      src.size(), encoding_rs::mem::detail::null_to_bogus<uint8_t>(dst.data()),
+      src.size(), encoding_rs::mem::detail::null_to_bogus<char>(dst.data()),
       dst.size());
 }
 
@@ -215,10 +214,10 @@ inline void convert_utf16_to_latin1_lossy(std::u16string_view src,
  * Panics if the destination buffer is shorter than stated above.
  */
 inline size_t convert_utf16_to_utf8(std::u16string_view src,
-                                    gsl::span<uint8_t> dst) {
+                                    gsl::span<char> dst) {
   return encoding_mem_convert_utf16_to_utf8(
       encoding_rs::mem::detail::null_to_bogus<const char16_t>(src.data()),
-      src.size(), encoding_rs::mem::detail::null_to_bogus<uint8_t>(dst.data()),
+      src.size(), encoding_rs::mem::detail::null_to_bogus<char>(dst.data()),
       dst.size());
 }
 
@@ -243,12 +242,12 @@ inline size_t convert_utf16_to_utf8(std::u16string_view src,
  * Encoding Standard.
  */
 inline std::tuple<size_t, size_t> convert_utf16_to_utf8_partial(
-    std::u16string_view src, gsl::span<uint8_t> dst) {
+    std::u16string_view src, gsl::span<char> dst) {
   size_t src_read = src.size();
   size_t dst_written = dst.size();
   encoding_mem_convert_utf16_to_utf8_partial(
       encoding_rs::mem::detail::null_to_bogus<const char16_t>(src.data()),
-      &src_read, encoding_rs::mem::detail::null_to_bogus<uint8_t>(dst.data()),
+      &src_read, encoding_rs::mem::detail::null_to_bogus<char>(dst.data()),
       &dst_written);
   return {src_read, dst_written};
 }
@@ -281,11 +280,11 @@ inline std::tuple<size_t, size_t> convert_utf16_to_utf8_partial(
  * UB ensues if `src` and `dst` overlap.
  */
 inline size_t convert_utf8_to_latin1_lossy(std::string_view src,
-                                           gsl::span<uint8_t> dst) {
+                                           gsl::span<char> dst) {
   return encoding_mem_convert_utf8_to_latin1_lossy(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(
-          reinterpret_cast<const uint8_t*>(src.data())),
-      src.size(), encoding_rs::mem::detail::null_to_bogus<uint8_t>(dst.data()),
+      encoding_rs::mem::detail::null_to_bogus<const char>(
+          reinterpret_cast<const char*>(src.data())),
+      src.size(), encoding_rs::mem::detail::null_to_bogus<char>(dst.data()),
       dst.size());
 }
 
@@ -305,8 +304,8 @@ inline size_t convert_utf8_to_latin1_lossy(std::string_view src,
 inline size_t convert_utf8_to_utf16(std::string_view src,
                                     gsl::span<char16_t> dst) {
   return encoding_mem_convert_utf8_to_utf16(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(
-          reinterpret_cast<const uint8_t*>(src.data())),
+      encoding_rs::mem::detail::null_to_bogus<const char>(
+          reinterpret_cast<const char*>(src.data())),
       src.size(), encoding_rs::mem::detail::null_to_bogus<char16_t>(dst.data()),
       dst.size());
 }
@@ -328,11 +327,11 @@ inline size_t convert_utf8_to_utf16(std::string_view src,
  *
  * UB ensues if `src` and `dst` overlap.
  */
-inline size_t copy_ascii_to_ascii(gsl::span<const uint8_t> src,
-                                  gsl::span<uint8_t> dst) {
+inline size_t copy_ascii_to_ascii(gsl::span<const char> src,
+                                  gsl::span<char> dst) {
   return encoding_mem_copy_ascii_to_ascii(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(src.data()),
-      src.size(), encoding_rs::mem::detail::null_to_bogus<uint8_t>(dst.data()),
+      encoding_rs::mem::detail::null_to_bogus<const char>(src.data()),
+      src.size(), encoding_rs::mem::detail::null_to_bogus<char>(dst.data()),
       dst.size());
 }
 
@@ -350,10 +349,10 @@ inline size_t copy_ascii_to_ascii(gsl::span<const uint8_t> src,
  *
  * Panics if the destination buffer is shorter than stated above.
  */
-inline size_t copy_ascii_to_basic_latin(gsl::span<const uint8_t> src,
+inline size_t copy_ascii_to_basic_latin(gsl::span<const char> src,
                                         gsl::span<char16_t> dst) {
   return encoding_mem_copy_ascii_to_basic_latin(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(src.data()),
+      encoding_rs::mem::detail::null_to_bogus<const char>(src.data()),
       src.size(), encoding_rs::mem::detail::null_to_bogus<char16_t>(dst.data()),
       dst.size());
 }
@@ -373,10 +372,10 @@ inline size_t copy_ascii_to_basic_latin(gsl::span<const uint8_t> src,
  * Panics if the destination buffer is shorter than stated above.
  */
 inline size_t copy_basic_latin_to_ascii(gsl::span<const char16_t> src,
-                                        gsl::span<uint8_t> dst) {
+                                        gsl::span<char> dst) {
   return encoding_mem_copy_basic_latin_to_ascii(
       encoding_rs::mem::detail::null_to_bogus<const char16_t>(src.data()),
-      src.size(), encoding_rs::mem::detail::null_to_bogus<uint8_t>(dst.data()),
+      src.size(), encoding_rs::mem::detail::null_to_bogus<char>(dst.data()),
       dst.size());
 }
 
@@ -397,8 +396,7 @@ inline void ensure_utf16_validity(gsl::span<char16_t> buffer) {
  */
 inline bool is_ascii(std::string_view buffer) {
   return encoding_mem_is_ascii(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(
-          reinterpret_cast<const uint8_t*>(buffer.data())),
+      encoding_rs::mem::detail::null_to_bogus<const char>(buffer.data()),
       buffer.size());
 }
 
@@ -515,8 +513,7 @@ inline bool is_utf16_latin1(std::u16string_view buffer) {
  */
 inline bool is_bidi(std::string_view buffer) {
   return encoding_mem_is_utf8_bidi(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(
-          reinterpret_cast<const uint8_t*>(buffer.data())),
+      encoding_rs::mem::detail::null_to_bogus<const char>(buffer.data()),
       buffer.size());
 }
 
@@ -529,8 +526,7 @@ inline bool is_bidi(std::string_view buffer) {
  */
 inline bool is_utf8_latin1(std::string_view buffer) {
   return encoding_mem_is_utf8_latin1(
-      encoding_rs::mem::detail::null_to_bogus<const uint8_t>(
-          reinterpret_cast<const uint8_t*>(buffer.data())),
+      encoding_rs::mem::detail::null_to_bogus<const char>(buffer.data()),
       buffer.size());
 }
 
