@@ -16,9 +16,13 @@ Please see the file named
 This crate is meant for use in binaries compiled with `panic = 'abort'`, which
 is _required_ for correctness! Unwinding across FFI is Undefined Behavior, and
 this crate does nothing to try to prevent unwinding across the FFI if
-compliled with unwinding enabled.
+compiled with unwinding enabled.
 
 ## Release Notes
+
+### 0.2.1
+
+* Fix a typo in README.
 
 ### 0.2.0
 
