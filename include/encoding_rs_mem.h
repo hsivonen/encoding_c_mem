@@ -519,7 +519,7 @@ bool encoding_mem_is_char_bidi(char32_t c);
 bool encoding_mem_is_str_bidi(const char* buffer, size_t len);
 
 /**
- * Checks whether the buffer represents only code point less than or equal
+ * Checks whether the buffer represents only code points less than or equal
  * to U+00FF.
  *
  * Fails fast. (I.e. returns before having read the whole buffer if code

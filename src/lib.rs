@@ -63,7 +63,7 @@ pub unsafe extern "C" fn encoding_mem_is_utf8_latin1(buffer: *const u8, len: usi
     encoding_rs::mem::is_utf8_latin1(::std::slice::from_raw_parts(buffer, len))
 }
 
-/// Checks whether the buffer represents only code point less than or equal
+/// Checks whether the buffer represents only code points less than or equal
 /// to U+00FF.
 ///
 /// Fails fast. (I.e. returns before having read the whole buffer if code
