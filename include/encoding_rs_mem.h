@@ -167,13 +167,6 @@ size_t encoding_mem_convert_latin1_to_utf8(const char* src, size_t src_len,
  *
  * If the output isn't large enough, not all input is consumed.
  *
- * # Safety
- *
- * Note that this function may write garbage beyond the number of bytes
- * indicated by the return value, so using a `&mut str` interpreted as
- * `&mut [u8]` as the destination is not safe. If you want to convert into
- * a `&mut str`, use `convert_utf16_to_str()` instead of this function.
- *
  * # Undefined behavior
  *
  * UB ensues if `src` and `src_len` don't designate a valid memory block, if
