@@ -20,6 +20,10 @@ compiled with unwinding enabled.
 
 ## Release Notes
 
+### 0.2.3
+
+* Documentation-only fix.
+
 ### 0.2.2
 
 * Wrap `convert_utf8_to_utf16_without_replacement`, `utf8_latin1_up_to`,

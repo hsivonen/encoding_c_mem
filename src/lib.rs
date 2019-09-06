@@ -392,7 +392,8 @@ pub unsafe extern "C" fn encoding_mem_convert_utf8_to_utf16_without_replacement(
 /// with the REPLACEMENT CHARACTER with potentially insufficient output
 /// space.
 ///
-/// Returns the number of code units read and the number of bytes written.
+/// Writes the number of code units read into `*src_len` and the number of
+/// bytes written into `*dst_len`.
 ///
 /// Guarantees that the bytes in the destination beyond the number of
 /// bytes claimed as written by the second item of the return tuple
@@ -510,7 +511,8 @@ pub unsafe extern "C" fn encoding_mem_convert_latin1_to_utf16(
 /// (i.e. U+0000 to U+00FF, inclusive) to UTF-8 with potentially insufficient
 /// output space.
 ///
-/// Returns the number of bytes read and the number of bytes written.
+/// Writes the number of code units read into `*src_len` and the number of
+/// bytes written into `*dst_len`.
 ///
 /// If the output isn't large enough, not all input is consumed.
 ///
