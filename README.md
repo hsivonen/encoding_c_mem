@@ -20,6 +20,10 @@ compiled with unwinding enabled.
 
 ## Release Notes
 
+### 0.2.4
+
+* Documentation-only fix.
+
 ### 0.2.3
 
 * Documentation-only fix.

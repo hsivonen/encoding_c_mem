@@ -304,6 +304,21 @@ inline size_t convert_utf8_to_utf16(std::string_view src,
       dst.size());
 }
 
+/**
+ * Converts potentially-invalid UTF-8 to valid UTF-16 signaling on error.
+ *
+ * The length of the destination buffer must be at least the length of the
+ * source buffer.
+ *
+ * Returns the number of `char16_t`s written or `std::nullopt` if the input was
+ * invalid.
+ *
+ * When the input was invalid, some output may have been written.
+ *
+ * # Panics
+ *
+ * Panics if the destination buffer is shorter than stated above.
+ */
 inline std::optional<size_t> convert_utf8_to_utf16_without_replacement(
     std::string_view src, gsl::span<char16_t> dst) {
   size_t val = encoding_mem_convert_utf8_to_utf16_without_replacement(
