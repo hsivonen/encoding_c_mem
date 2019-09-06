@@ -355,6 +355,39 @@ pub unsafe extern "C" fn encoding_mem_convert_str_to_utf16(
     )
 }
 
+/// Converts potentially-invalid UTF-8 to valid UTF-16 signaling on error.
+///
+/// The length of the destination buffer must be at least the length of the
+/// source buffer.
+///
+/// Returns the number of `u16`s written or `SIZE_MAX` if the input was invalid.
+///
+/// When the input was invalid, some output may have been written.
+///
+/// # Panics
+///
+/// Panics if the destination buffer is shorter than stated above.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `src` and `src_len` don't designate a valid memory block, if
+/// `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+/// block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+/// `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+/// aligned. Likewise for `dst` and `dst_len`.)
+#[no_mangle]
+pub unsafe extern "C" fn encoding_mem_convert_utf8_to_utf16_without_replacement(
+    src: *const u8,
+    src_len: usize,
+    dst: *mut u16,
+    dst_len: usize,
+) -> usize {
+    encoding_rs::mem::convert_utf8_to_utf16_without_replacement(
+        ::std::slice::from_raw_parts(src, src_len),
+        ::std::slice::from_raw_parts_mut(dst, dst_len),
+    ).unwrap_or(::std::usize::MAX)
+}
+
 /// Converts potentially-invalid UTF-16 to valid UTF-8 with errors replaced
 /// with the REPLACEMENT CHARACTER with potentially insufficient output
 /// space.
@@ -647,6 +680,36 @@ pub unsafe extern "C" fn encoding_mem_convert_utf16_to_latin1_lossy(
 #[no_mangle]
 pub unsafe extern "C" fn encoding_mem_utf16_valid_up_to(buffer: *const u16, len: usize) -> usize {
     encoding_rs::mem::utf16_valid_up_to(::std::slice::from_raw_parts(buffer, len))
+}
+
+/// Returns the index of first byte that starts an invalid byte
+/// sequence or a non-Latin1 byte sequence, or the length of the
+/// string if there are neither.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+/// or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+/// still has to be non-`NULL` and aligned.)
+#[no_mangle]
+pub unsafe extern "C" fn encoding_mem_utf8_latin1_up_to(buffer: *const u8, len: usize) -> usize {
+    encoding_rs::mem::utf8_latin1_up_to(::std::slice::from_raw_parts(buffer, len))
+}
+
+/// Returns the index of first byte that starts a non-Latin1 byte
+/// sequence, or the length of the string if there are none.
+///
+/// # Undefined behavior
+///
+/// UB ensues if `buffer` and `buffer_len` don't designate a valid memory block,
+/// if `buffer` is `NULL`, or if the memory block does not contain valid UTF-8.
+/// (If `buffer_len` is `0`, `buffer` may be bogus but still has to be non-`NULL`
+/// and aligned.)
+#[no_mangle]
+pub unsafe extern "C" fn encoding_mem_str_latin1_up_to(buffer: *const u8, len: usize) -> usize {
+    encoding_rs::mem::str_latin1_up_to(::std::str::from_utf8_unchecked(
+        ::std::slice::from_raw_parts(buffer, len),
+    ))
 }
 
 /// Replaces unpaired surrogates in the input with the REPLACEMENT CHARACTER.

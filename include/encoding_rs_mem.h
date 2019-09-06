@@ -355,6 +355,34 @@ size_t encoding_mem_convert_utf8_to_utf16(const char* src, size_t src_len,
                                           char16_t* dst, size_t dst_len);
 
 /**
+ * Converts potentially-invalid UTF-8 to valid UTF-16 signaling on error.
+ *
+ * The length of the destination buffer must be at least the length of the
+ * source buffer.
+ *
+ * Returns the number of `char16_t`s written or `SIZE_MAX` if the input was
+ * invalid.
+ *
+ * When the input was invalid, some output may have been written.
+ *
+ * # Panics
+ *
+ * Panics if the destination buffer is shorter than stated above.
+ *
+ * # Undefined behavior
+ *
+ * UB ensues if `src` and `src_len` don't designate a valid memory block, if
+ * `src` is `NULL`, if `dst` and `dst_len` don't designate a valid memory
+ * block, if `dst` is `NULL` or if the two memory blocks overlap. (If
+ * `src_len` is `0`, `src` may be bogus but still has to be non-`NULL` and
+ * aligned. Likewise for `dst` and `dst_len`.)
+ */
+size_t encoding_mem_convert_utf8_to_utf16_without_replacement(const char* src,
+                                                              size_t src_len,
+                                                              char16_t* dst,
+                                                              size_t dst_len);
+
+/**
  * Copies ASCII from source to destination up to the first non-ASCII byte
  * (or the end of the input if it is ASCII in its entirety).
  *
@@ -640,6 +668,32 @@ bool encoding_mem_is_utf8_latin1(const char* buffer, size_t len);
  * still has to be non-`NULL` and aligned.)
  */
 size_t encoding_mem_utf16_valid_up_to(const char16_t* buffer, size_t len);
+
+/**
+ * Returns the index of first byte that starts an invalid byte
+ * sequence or a non-Latin1 byte sequence, or the length of the
+ * string if there are neither.
+ *
+ * # Undefined behavior
+ *
+ * UB ensues if `buffer` and `buffer_len` don't designate a valid memory block
+ * or if `buffer` is `NULL`. (If `buffer_len` is `0`, `buffer` may be bogus but
+ * still has to be non-`NULL` and aligned.)
+ */
+size_t encoding_mem_utf8_latin1_up_to(const char* buffer, size_t len);
+
+/**
+ * Returns the index of first byte that starts a non-Latin1 byte
+ * sequence, or the length of the string if there are none.
+ *
+ * # Undefined behavior
+ *
+ * UB ensues if `buffer` and `buffer_len` don't designate a valid memory block,
+ * if `buffer` is `NULL`, or if the memory block does not contain valid UTF-8.
+ * (If `buffer_len` is `0`, `buffer` may be bogus but still has to be non-`NULL`
+ * and aligned.)
+ */
+size_t encoding_mem_str_latin1_up_to(const char* buffer, size_t len);
 
 #ifdef __cplusplus
 }  // extern "C"
