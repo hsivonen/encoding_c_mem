@@ -1,6 +1,6 @@
 # encoding_c_mem
 
-[![crates.io](https://meritbadge.herokuapp.com/encoding_c_mem)](https://crates.io/crates/encoding_c_mem)
+[![crates.io](https://img.shields.io/crates/v/encoding_c_mem.svg)](https://crates.io/crates/encoding_c_mem)
 [![docs.rs](https://docs.rs/encoding_c_mem/badge.svg)](https://docs.rs/encoding_c_mem/)
 [![Apache 2 / MIT dual-licensed](https://img.shields.io/badge/license-Apache%202%20%2F%20MIT-blue.svg)](https://github.com/hsivonen/encoding_c_mem/blob/master/COPYRIGHT)
 
